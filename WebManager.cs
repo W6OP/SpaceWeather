@@ -1,22 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace W6OP.HamCockpitPlugins.SpaceWeather
 {
     class WebManager
     {
+        private readonly HttpClient client = new HttpClient();
+
         /// <summary>
         /// 
         /// </summary>
         public WebManager()
         {
 
+        }
+
+        internal string RetrieveSunSpotData(string url)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -26,8 +31,7 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
         /// <returns></returns>
         public Image DownloadImageFromUrl(string imageUrl)
         {
-            Image image = null;
-
+            Image image;
             try
             {
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(imageUrl);
@@ -49,6 +53,47 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
             }
 
             return image;
+        }
+
+        public string DownloadDataFromUrl(string url)
+        {
+            string data = null;
+
+            try
+            {
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+                webRequest.AllowWriteStreamBuffering = true;
+                webRequest.Timeout = 30000;
+
+                WebResponse webResponse = webRequest.GetResponse();
+
+                Stream stream = webResponse.GetResponseStream();
+
+                //image = Image.FromStream(stream);
+
+                webResponse.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
+            return data;
+        }
+
+       
+
+        public async Task<string> GetJsonAsync(string uri)
+        {
+            string json = null;
+
+            HttpResponseMessage response = await client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                json = await response.Content.ReadAsStringAsync();
+            }
+            return json;
         }
 
     } // end class
