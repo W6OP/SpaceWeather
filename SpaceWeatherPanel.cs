@@ -20,24 +20,36 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
         private const string NASA_Url = "https://services.swpc.noaa.gov/images/";
         private const string NOAA_Sunspot_Url = "https://services.swpc.noaa.gov/json/solar-cycle/predicted-solar-cycle.json";
 
-        DataTable SunSpotTable = new DataTable();
-        //BindingSource SBind = new BindingSource();
-        BindingSource SBind = new BindingSource();
-       
+        private DataTable SunSpotTable = new DataTable();
+        private BindingSource SunSpotBinder = new BindingSource();
+
+        private bool SunSpotsHaveBeenLoaded;
 
         /// <summary>
-        /// 
+        /// Initialize the control.
         /// </summary>
         public SpaceWeatherPanel()
         {
             InitializeComponent();
 
-            SBind.DataSource = SunSpotTable;
-            DataGridViewSunSpots.DataSource = SBind;
+            SunSpotBinder.DataSource = SunSpotTable;
+            DataGridViewSunSpots.DataSource = SunSpotBinder;
+
         }
 
         /// <summary>
-        /// 
+        /// Load the space weather image for the initial display.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SpaceWeatherPanel_Load(object sender, EventArgs e)
+        {
+            GetImage("swx-overview-small.gif");
+        }
+
+        /// <summary>
+        /// Cosolidate button clicks to one event.
+        /// Use the tag of the button as the image name.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -49,7 +61,7 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
         }
 
         /// <summary>
-        /// 
+        /// Display the retrieved image in the control.
         /// </summary>
         /// <param name="imageName"></param>
         private void GetImage(string imageName)
@@ -61,21 +73,24 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
             TabControlSpaceWeather.SelectedTab = TabPageSpaceWeather;
         }
 
+        /// <summary>
+        /// Button click event for the SunSpot button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ButtonPredictedSunSpots_Click(object sender, EventArgs e)
         {
             _ = GetDataAsync();
         }
 
         /// <summary>
-        /// Predicted SunSpot data from NOAA
+        /// retrieve predicted SunSpot data from NOAA and display in a datagridview.
         /// https://www.swpc.noaa.gov/products/predicted-sunspot-number-and-radio-flux
         /// https://services.swpc.noaa.gov/json/solar-cycle/predicted-solar-cycle.json
         /// Date - predicted - high - low - 10.7 cm Radio Flux predicted - 10.7 cm Radio Flux high - 10.7 cm Radio Flux - low
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
-
         private async Task GetDataAsync()
         {
             string url = NOAA_Sunspot_Url;
@@ -87,9 +102,22 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
             TabControlSpaceWeather.SelectedTab = TabPageSunSpots; 
 
             DataGridViewSunSpots.Columns.Clear();
-            SBind.DataSource = SunSpotTable;
-            DataGridViewSunSpots.DataSource = SBind;
-           
+            SunSpotBinder.DataSource = SunSpotTable;
+            DataGridViewSunSpots.DataSource = SunSpotBinder;
+        }
+
+        /// <summary>
+        /// The first time the SunSpot tab is selected, query for SunSpot data.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TabControlSpaceWeather_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (SunSpotsHaveBeenLoaded == false)
+            {
+                SunSpotsHaveBeenLoaded = true;
+                _ = GetDataAsync();
+            }
         }
     } // end class
 }

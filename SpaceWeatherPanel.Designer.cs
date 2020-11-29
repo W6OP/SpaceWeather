@@ -166,6 +166,7 @@
             this.TabControlSpaceWeather.SelectedIndex = 0;
             this.TabControlSpaceWeather.Size = new System.Drawing.Size(654, 679);
             this.TabControlSpaceWeather.TabIndex = 24;
+            this.TabControlSpaceWeather.SelectedIndexChanged += new System.EventHandler(this.TabControlSpaceWeather_SelectedIndexChanged);
             // 
             // TabPageSpaceWeather
             // 
@@ -184,7 +185,7 @@
             this.TabPageSunSpots.Location = new System.Drawing.Point(4, 22);
             this.TabPageSunSpots.Name = "TabPageSunSpots";
             this.TabPageSunSpots.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageSunSpots.Size = new System.Drawing.Size(646, 620);
+            this.TabPageSunSpots.Size = new System.Drawing.Size(646, 653);
             this.TabPageSunSpots.TabIndex = 1;
             this.TabPageSunSpots.Text = "SunSpots";
             this.TabPageSunSpots.UseVisualStyleBackColor = true;
@@ -195,7 +196,7 @@
             this.DataGridViewSunSpots.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataGridViewSunSpots.Location = new System.Drawing.Point(3, 3);
             this.DataGridViewSunSpots.Name = "DataGridViewSunSpots";
-            this.DataGridViewSunSpots.Size = new System.Drawing.Size(640, 614);
+            this.DataGridViewSunSpots.Size = new System.Drawing.Size(640, 647);
             this.DataGridViewSunSpots.TabIndex = 0;
             // 
             // SpaceWeatherPanel
@@ -214,6 +215,7 @@
             this.Controls.Add(this.Button_ace_epam_2hour);
             this.Name = "SpaceWeatherPanel";
             this.Size = new System.Drawing.Size(828, 713);
+            this.Load += new System.EventHandler(this.SpaceWeatherPanel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ImagePictureBox)).EndInit();
             this.TabControlSpaceWeather.ResumeLayout(false);
             this.TabPageSpaceWeather.ResumeLayout(false);
