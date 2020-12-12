@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace W6OP.HamCockpitPlugins.SpaceWeather
 {
+    /// <summary>
+    /// Containor for button properties at run time.
+    /// </summary>
     public class Endpoint
     {
         public Endpoint()
