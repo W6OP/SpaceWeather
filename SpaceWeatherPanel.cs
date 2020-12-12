@@ -17,11 +17,12 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
     {
         private readonly WebManager webManager = new WebManager();
         private readonly JSONManager jsonManager = new JSONManager();
-        private const string NASA_Url = "https://services.swpc.noaa.gov/images/";
+   
         private const string NOAA_Sunspot_Url = "https://services.swpc.noaa.gov/json/solar-cycle/predicted-solar-cycle.json";
+     
 
         private DataTable SunSpotTable = new DataTable();
-        private BindingSource SunSpotBinder = new BindingSource();
+        private readonly BindingSource SunSpotBinder = new BindingSource();
 
         private bool SunSpotsHaveBeenLoaded;
 
@@ -44,7 +45,14 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
         /// <param name="e"></param>
         private void SpaceWeatherPanel_Load(object sender, EventArgs e)
         {
-            GetImage("swx-overview-small.gif");
+            Endpoint endpoint = new Endpoint();
+            string url = endpoint.button1Address;
+            string caption = endpoint.button1Caption;
+            string comments = endpoint.button1Comment;
+
+            SetButtonLabels();
+
+            GetImage(url, caption, comments);
         }
 
         /// <summary>
@@ -56,19 +64,22 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
         private void Button_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
+           
+            var endpointInfo = GetEndpoint((string)button.Tag);
 
-            GetImage((string)button.Tag);
+            GetImage(endpointInfo.Item1, endpointInfo.Item2, endpointInfo.Item3);
         }
 
         /// <summary>
         /// Display the retrieved image in the control.
         /// </summary>
         /// <param name="imageName"></param>
-        private void GetImage(string imageName)
+        private void GetImage(string imageURL, string caption, string comment)
         {
-            string imageUrl = NASA_Url + imageName;
+            ImagePictureBox.Image = webManager.DownloadImageFromUrl(imageURL);
 
-            ImagePictureBox.Image = webManager.DownloadImageFromUrl(imageUrl);
+            LabelCaption.Text = caption;
+            LabelComments.Text = comment;
 
             TabControlSpaceWeather.SelectedTab = TabPageSpaceWeather;
         }
@@ -119,6 +130,102 @@ namespace W6OP.HamCockpitPlugins.SpaceWeather
                 _ = GetDataAsync();
             }
         }
+
+        /// <summary>
+        /// get the URL etc. for the specific button.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        private Tuple<string, string, string> GetEndpoint(string tag)
+        {
+            Endpoint endpoint = new Endpoint();
+            Tuple<string, string, string> endpointInfo = Tuple.Create("", "", "");
+
+            switch (tag)
+            {
+                case "1":
+                    endpointInfo = Tuple.Create(endpoint.button1Address, endpoint.button1Caption, endpoint.button1Comment);
+                    break;
+                case "2":
+                    endpointInfo = Tuple.Create(endpoint.button2Address, endpoint.button2Caption, endpoint.button2Comment);
+                    break;
+                case "3":
+                    endpointInfo = Tuple.Create(endpoint.button3Address, endpoint.button3Caption, endpoint.button3Comment);
+                    break;
+                case "4":
+                    endpointInfo = Tuple.Create(endpoint.button4Address, endpoint.button4Caption, endpoint.button4Comment);
+                    break;
+                case "5":
+                    endpointInfo = Tuple.Create(endpoint.button5Address, endpoint.button5Caption, endpoint.button5Comment);
+                    break;
+                case "6":
+                    endpointInfo = Tuple.Create(endpoint.button6Address, endpoint.button6Caption, endpoint.button6Comment);
+                    break;
+                case "7":
+                    endpointInfo = Tuple.Create(endpoint.button7Address, endpoint.button7Caption, endpoint.button7Comment);
+                    break;
+                case "8":
+                    endpointInfo = Tuple.Create(endpoint.button8Address, endpoint.button8Caption, endpoint.button8Comment);
+                    break;
+                case "9":
+                    endpointInfo = Tuple.Create(endpoint.button9Address, endpoint.button9Caption, endpoint.button9Comment);
+                    break;
+                case "10":
+                    //endpointInfo = Tuple.Create(endpoint.button10Address, endpoint.button10Caption, endpoint.button10Comment);
+                    break;
+            }
+
+            return endpointInfo;
+        }
+
+        /// <summary>
+        /// Set the button labels.
+        /// </summary>
+        private void SetButtonLabels()
+        {
+            Endpoint endpoint = new Endpoint();
+
+            foreach (var button in panel4.Controls.OfType<Button>())
+            {
+                switch (button.Tag)
+                {
+                    case "1":
+                        button.Text = endpoint.button1Text;
+                        break;
+                    case "2":
+                        button.Text = endpoint.button2Text;
+                        break;
+                    case "3":
+                        button.Text = endpoint.button3Text;
+                        break;
+                    case "4":
+                        button.Text = endpoint.button4Text;
+                        break;
+                    case "5":
+                        button.Text = endpoint.button5Text;
+                        break;
+                    case "6":
+                        button.Text = endpoint.button6Text;
+                        break;
+                    case "7":
+                        button.Text = endpoint.button7Text;
+                        break;
+                    case "8":
+                        button.Text = endpoint.button8Text;
+                        break;
+                    case "9":
+                        button.Text = endpoint.button9Text;
+                        break;
+                    case "80":
+                        button.Text = "Predicted Sun Spots";
+                        break;
+                    default:
+                        button.Text = "";
+                        break;
+                }
+            }
+        }
+
     } // end class
 }
 

@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Endpoint.cs" />
     <Compile Include="JSONManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SpaceWeatherPanel.cs">
@@ -72,7 +73,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)$(TargetName).dll" ..\..\..\Deploy
+    <PostBuildEvent>copy "$(TargetDir)$(TargetName).dll" "..\..\..\Deploy"
 copy "$(TargetDir)$(TargetName).dll" "C:\Program Files (x86)\Afreet\HamCockpit"</PostBuildEvent>
   </PropertyGroup>
 </Project>
