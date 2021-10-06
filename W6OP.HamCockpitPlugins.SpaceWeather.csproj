@@ -45,7 +45,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="VE3NEA.HamCockpit.PluginAPI">
-      <HintPath>..\HamCockpit\Release\VE3NEA.HamCockpit.PluginAPI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Afreet\HamCockpit\VE3NEA.HamCockpit.PluginAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -73,7 +73,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)$(TargetName).dll" "..\..\..\Deploy"
-copy "$(TargetDir)$(TargetName).dll" "C:\Program Files (x86)\Afreet\HamCockpit"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetDir)$(TargetName).dll" "..\..\..\Deploy"</PostBuildEvent>
   </PropertyGroup>
 </Project>
